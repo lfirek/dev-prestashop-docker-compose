@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+    prestashop:
+        container_name: prestashop
+        image: prestashop/prestashop:1.7.5.1
+        environment:
+        - PS_DEV_MODE=true
+        depends_on:
+        - database
+        ports:
+        - 8080:80
+        volumes:
+        - ./src:/var/www/html/modules/module_name
+        restart: always
+
+    database:
+        container_name: database
+        image: mysql:5.7.24
+        environment:
+        - MYSQL_ROOT_PASSWORD=admin
+        ports:
+        - 3306:3306
+
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        depends_on:
+        - database
+        environment:
+        - PMA_HOST=database
+        ports:
+        - 8090:80
